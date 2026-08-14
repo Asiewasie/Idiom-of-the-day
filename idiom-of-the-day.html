@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Idiom of the day</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mochiy+Pop+One&family=Piazzolla:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    min-height: 100%;
+    background: transparent;
+  }
+
+  body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.25rem;
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    padding: 1.25rem;
+  }
+
+  /* --- Week navigation buttons --- */
+  #week-nav {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.5rem;
+    max-width: 700px;
+  }
+
+  .week-btn {
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: #ffffff;
+    background: #4C9A2A;
+    border: none;
+    border-radius: 999px;
+    width: 2.6rem;
+    height: 2.6rem;
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.1s ease;
+  }
+
+  .week-btn:hover { background: #3F8321; }
+  .week-btn:active { transform: scale(0.94); }
+
+  .week-btn.active {
+    background: #2E6B18;
+    box-shadow: 0 0 0 3px #C7E4B4;
+  }
+
+  .week-btn:focus-visible {
+    outline: 3px solid #2E6B18;
+    outline-offset: 2px;
+  }
+
+  /* --- Content area --- */
+  #content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    max-width: 640px;
+    width: 100%;
+  }
+
+  #idiom-image {
+    max-width: 100%;
+    max-height: 280px;
+    border-radius: 14px;
+    object-fit: contain;
+  }
+
+  #idiom-title {
+    font-family: "Mochiy Pop One", sans-serif;
+    font-size: 44px;
+    color: #1F2933;
+    text-align: center;
+    line-height: 1.15;
+    margin: 0;
+  }
+
+  /* --- Answer options --- */
+  #options {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    width: 100%;
+  }
+
+  .option-btn {
+    font-family: "Piazzolla", serif;
+    font-size: 1.3rem;
+    font-weight: 500;
+    text-align: left;
+    color: #1F2933;
+    background: #EAF6E1;
+    border: 2px solid #C7E4B4;
+    border-radius: 12px;
+    padding: 0.7rem 1rem;
+    cursor: pointer;
+    transition: background 0.2s ease, border-color 0.2s ease;
+  }
+
+  .option-btn:hover { background: #DCF0CC; }
+
+  .option-btn.correct {
+    background: #DFF3D3;
+    border-color: #4C9A2A;
+  }
+
+  .option-btn.incorrect {
+    background: #F8DCDA;
+    border-color: #C94C3F;
+  }
+
+  .option-btn:disabled { cursor: default; }
+</style>
+</head>
+<body>
+
+<div id="week-nav"></div>
+
+<div id="content">
+  <img id="idiom-image" src="" alt="Idiom illustration">
+  <h1 id="idiom-title"></h1>
+  <div id="options"></div>
+</div>
+
+<script>
+  // ---- EDIT YOUR IDIOM LIST HERE ----
+  // image: filename inside an "images" folder in the same repo, e.g. images/week3.png
+  // options: exactly 3, one marked correct: true
+  const idioms = [
+    {
+      week: 3,
+      idiom: "A couch potato",
+      image: "images/week3.png",
+      options: [
+        { text: "A vegetable shaped like a couch", correct: false },
+        { text: "Someone who spends a lot of time sitting and watching TV instead of being active", correct: true },
+        { text: "Someone who is very tired and wants to sleep", correct: false }
+      ]
+    },
+    {
+      week: 6,
+      idiom: "Under the weather",
+      image: "images/week6.png",
+      options: [
+        { text: "Feeling slightly sick or unwell", correct: true },
+        { text: "Standing outside in bad weather", correct: false },
+        { text: "Feeling very cold", correct: false }
+      ]
+    },
+    {
+      week: 9,
+      idiom: "Barking up the wrong tree",
+      image: "images/week9.png",
+      options: [
+        { text: "A dog that won't stop barking", correct: false },
+        { text: "Pursuing the wrong idea or accusing the wrong person", correct: true },
+        { text: "Climbing a tree to escape a dog", correct: false }
+      ]
+    },
+    {
+      week: 12,
+      idiom: "The last straw",
+      image: "images/week12.png",
+      options: [
+        { text: "A piece of hay that fell off a farm cart", correct: false },
+        { text: "The final small problem that makes someone lose patience after many others", correct: true },
+        { text: "A small mistake that doesn't matter at all", correct: false }
+      ]
+    },
+    {
+      week: 15,
+      idiom: "Cool as a cucumber",
+      image: "images/week15.png",
+      options: [
+        { text: "A vegetable that has been in the fridge", correct: false },
+        { text: "Someone who doesn't like hot weather", correct: false },
+        { text: "Calm and relaxed, even in a stressful situation", correct: true }
+      ]
+    },
+    {
+      week: 19,
+      idiom: "Give me a hand",
+      image: "images/week19.png",
+      options: [
+        { text: "Please clap for me", correct: false },
+        { text: "Please help me with something", correct: true },
+        { text: "Please shake my hand", correct: false }
+      ]
+    },
+    {
+      week: 21,
+      idiom: "Bob's your uncle",
+      image: "images/week21.png",
+      options: [
+        { text: "And there you go, it's that simple", correct: true },
+        { text: "A family member you haven't met", correct: false },
+        { text: "Someone who always helps out", correct: false }
+      ]
+    },
+    {
+      week: 22,
+      idiom: "Hit the sack",
+      image: "images/week22.png",
+      options: [
+        { text: "To hit something with a bag", correct: false },
+        { text: "To go to sleep", correct: true },
+        { text: "To pack your things quickly", correct: false }
+      ]
+    },
+    {
+      week: 25,
+      idiom: "Hold your horses",
+      image: "images/week25.png",
+      options: [
+        { text: "To take care of farm animals", correct: false },
+        { text: "To slow down or be patient", correct: true },
+        { text: "To hold onto something tightly", correct: false }
+      ]
+    },
+    {
+      week: 28,
+      idiom: "A piece of cake",
+      image: "images/week28.png",
+      options: [
+        { text: "A dessert served at parties", correct: false },
+        { text: "Something very easy to do", correct: true },
+        { text: "A small reward for hard work", correct: false }
+      ]
+    },
+    {
+      week: 31,
+      idiom: "Spill the beans",
+      image: "images/week31.png",
+      options: [
+        { text: "To make a mess while cooking", correct: false },
+        { text: "To reveal a secret", correct: true },
+        { text: "To argue with someone about food", correct: false }
+      ]
+    },
+    {
+      week: 34,
+      idiom: "In a pickle",
+      image: "images/week34.png",
+      options: [
+        { text: "Making a snack", correct: false },
+        { text: "In a difficult or messy situation", correct: true },
+        { text: "Feeling sour or annoyed", correct: false }
+      ]
+    }
+  ];
+  // -------------------------------------
+
+  const nav = document.getElementById("week-nav");
+  const imageEl = document.getElementById("idiom-image");
+  const titleEl = document.getElementById("idiom-title");
+  const optionsEl = document.getElementById("options");
+
+  idioms.forEach((entry, i) => {
+    const btn = document.createElement("button");
+    btn.className = "week-btn";
+    btn.textContent = entry.week;
+    btn.setAttribute("aria-label", "Week " + entry.week + ": " + entry.idiom);
+    btn.onclick = () => showIdiom(i);
+    nav.appendChild(btn);
+  });
+
+  function showIdiom(i) {
+    const entry = idioms[i];
+
+    document.querySelectorAll(".week-btn").forEach((b, idx) => {
+      b.classList.toggle("active", idx === i);
+    });
+
+    imageEl.src = entry.image;
+    imageEl.alt = entry.idiom + " illustration";
+    titleEl.textContent = entry.idiom;
+
+    optionsEl.innerHTML = "";
+    entry.options.forEach(opt => {
+      const optBtn = document.createElement("button");
+      optBtn.className = "option-btn";
+      optBtn.textContent = opt.text;
+      optBtn.onclick = () => {
+        document.querySelectorAll(".option-btn").forEach(b => b.disabled = true);
+        document.querySelectorAll(".option-btn").forEach((b, idx) => {
+          if (entry.options[idx].correct) b.classList.add("correct");
+        });
+        if (!opt.correct) optBtn.classList.add("incorrect");
+      };
+      optionsEl.appendChild(optBtn);
+    });
+  }
+
+  // show the first idiom by default
+  showIdiom(0);
+</script>
+
+</body>
+</html>
